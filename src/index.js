@@ -115,8 +115,7 @@ class Game extends React.Component {
     this.state = {
       beginning: [[],[],[]],
       squares: Array(9).fill(null),
-      stepNumber: 0,
-      
+
     };
   }
   componentDidMount(){
@@ -134,21 +133,20 @@ class Game extends React.Component {
   insertValueToSquares(index, value){
 
   }
+  isValid(index, value){
+
+  }
+  isFull(squares){
+
+  }
   handleClick(i) {
     const squares = this.state.squares;
     if (isFull(squares)) {
       return;
     }
-    squares[i] = this.state.xIsNext ? "X" : "O";
-    this.setState({
-      history: history.concat([
-        {
-          squares: squares
-        }
-      ]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
-    });
+    if(isValid(i, value)){
+      this.insertValueToSquares(i, value);
+    }
   }
 
   render() {
