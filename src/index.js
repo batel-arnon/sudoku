@@ -115,7 +115,7 @@ class Game extends React.Component {
     this.state = {
       beginning: [[],[],[]],
       squares: Array(9).fill(null),
-
+      counter: 0
     };
   }
   componentDidMount(){
@@ -160,18 +160,25 @@ class Game extends React.Component {
     return false;
   }
   insertValueToSquares(index, value){
-
+    const squares = this.state.squares;
+    squares[index] = value;
+    this.setState({squares: squares})
   }
   isValid(index, value){
-
+    return !(this.isAnah(index, value) || this.isCube(index, value) || this.isOfek(index, value));
   }
   isFull(squares){
-
+    for (let i = 0; i < this.state.squares.length; i++) {
+      if(this.state.squares[i] === null){
+        return false;
+      }
+    }
+    return true;
   }
   handleClick(i) {
     const squares = this.state.squares;
     if (isFull(squares)) {
-      return;
+      return;///////needs to be continue
     }
     if(isValid(i, value)){
       this.insertValueToSquares(i, value);
