@@ -4,12 +4,9 @@ import './index.css';
 
 
 function Square(props) {
-  this.keypres=function(event){
-    alert(event.keyCode-48);
-  };
   return (
-    <button className="square" onClick={props.onClick} onKeyPress={this.keypres}>
-      {props.value}
+    <button className="square" onClick={props.onClick}>
+      {props.value>0?props.value:null}
     </button>
   );
 }
@@ -117,7 +114,7 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      beginning: [[],[],[]],
+      beginning: [[0,9,8,0,0,0,0,0,0,0,7,0,0,5,8,0,9,2,0,0,2,4,0,0,8,0,1,0,1,0,0,2,0,6,0,0,0,4,0,9,0,3,0,2,0,0,0,3,0,6,0,0,1,0,6,0,7,0,0,2,1,0,0,8,2,0,3,9,0,0,4,0,0,0,0,0,0,0,2,3,0],[],[]],
       squares: Array(9).fill(null),
       counter: 0
     };
@@ -136,7 +133,7 @@ class Game extends React.Component {
       }
     }
     for (let i = 0; i < cubes[ind].length; i++) {
-      if (cubes[ind][i]===value){
+      if (this.state.squares[cubes[ind][i]]===value){
         return true;
       }
     }
@@ -173,7 +170,7 @@ class Game extends React.Component {
   }
   isFull(squares){
     for (let i = 0; i < this.state.squares.length; i++) {
-      if(this.state.squares[i] === null){
+      if(this.state.squares[i] === 0){
         return false;
       }
     }
@@ -181,13 +178,17 @@ class Game extends React.Component {
   }
   handleClick(i) {
     const squares = this.state.squares;
-    const value = prompt("insert number to add");
+    const val = prompt("insert number to add");
+    let value = parseInt(val, 10);
 
     if (this.isFull(squares)) {
       return;///////needs to be continue
     }
-    if(this.isValid(i, value)){
+    if(value>0 && value<=9 && this.isValid(i, value)){
       this.insertValueToSquares(i, value);
+    }
+    else{
+      alert("not valid");
     }
   }
 
