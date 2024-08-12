@@ -185,7 +185,7 @@ class Game extends React.Component {
     let value = parseInt(val, 10);
 
     if (this.isFull(squares)) {
-      this.state.counter++;
+      this.setState({counter: this.state.counter+1});
       this.setState({squares: this.state.beginning[this.state.counter]});
     }
     if(value>0 && value<=9 && this.isValid(i, value)){
