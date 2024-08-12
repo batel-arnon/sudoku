@@ -125,12 +125,39 @@ class Game extends React.Component {
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
     [0+27,1+27,2+27,9+27,10+27,11+27,18+27,19+27,20+27],[3+27,4+27,5+27,12+27,13+27,14+27,21+27,22+27,23+27],[6+27,7+27,8+27,15+27,16+27,17+27,24+27,25+27,26+27],
     [0+54,1+54,2+54,9+54,10+54,11+54,18+54,19+54,20+54],[3+54,4+54,5+54,12+54,13+54,14+54,21+54,22+54,23+54],[6+54,7+54,8+54,15+54,16+54,17+54,24+54,25+54,26+54]]
+    let ind;
+    for (let i = 0; i < cubes.length; i++) {
+      if (cubes[i].includes(value)){
+        ind = i;
+      }
+    }
+    for (let i = 0; i < cubes[ind].length; i++) {
+      if (cubes[ind][i]===value){
+        return true;
+      }
+    }
+    return false;
   }
   isOfek(index, value){
-
+    let begin_state = 9*(index/9);
+    for (let i = begin_state; i < begin_state+9; i++) {
+      if(this.state.squares[i] === value){
+        return true;
+      }
+    }
+    return false;
   }
   isAnah(index, value){
-
+    let begin_state = index;
+    while(begin_state>8){
+      begin_state-=9;
+    }
+    for (let i = begin_state; i < 81; i+=9) {
+      if(this.state.squares[i] === value){
+        return true;
+      }
+    }
+    return false;
   }
   insertValueToSquares(index, value){
 
