@@ -123,7 +123,7 @@ class Game extends React.Component {
     };
   }
   componentDidMount(){
-    this.setState({squares: this.state.beginning[2]});
+    this.setState({squares: this.state.beginning[this.state.counter]});
   }
   isCube(index, value){
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
@@ -185,7 +185,8 @@ class Game extends React.Component {
     let value = parseInt(val, 10);
 
     if (this.isFull(squares)) {
-      return;///////needs to be continue
+      this.state.counter++;
+      this.setState({squares: this.state.beginning[this.state.counter]});
     }
     if(value>0 && value<=9 && this.isValid(i, value)){
       this.insertValueToSquares(i, value);
