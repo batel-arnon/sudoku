@@ -119,7 +119,7 @@ class Game extends React.Component {
     };
   }
   componentDidMount(){
-    this.setState({squares: this.state.beginning});
+    this.setState({squares: this.state.beginning[0]});
   }
   isCube(index, value){
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
@@ -186,21 +186,6 @@ class Game extends React.Component {
   }
 
   render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
-
-    const moves = history.map((step, move) => {
-      const desc = move ?
-        'Go to move #' + move :
-        'Go to game start';
-      return (
-        <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-      );
-    });
-
     return (
       <div className="game">
           <Board
