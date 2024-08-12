@@ -128,7 +128,7 @@ class Game extends React.Component {
     [0+54,1+54,2+54,9+54,10+54,11+54,18+54,19+54,20+54],[3+54,4+54,5+54,12+54,13+54,14+54,21+54,22+54,23+54],[6+54,7+54,8+54,15+54,16+54,17+54,24+54,25+54,26+54]]
     let ind;
     for (let i = 0; i < cubes.length; i++) {
-      if (cubes[i].includes(value)){
+      if (cubes[i].includes(index)){
         ind = i;
       }
     }
