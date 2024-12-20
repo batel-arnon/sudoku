@@ -114,16 +114,115 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      beginning: [[0,9,8,0,0,0,0,0,0,0,7,0,0,5,8,0,9,2,0,0,2,4,0,0,8,0,1,0,1,0,0,2,0,6,0,0,0,4,0,9,0,3,0,2,0,0,0,3,0,6,0,0,1,0,6,0,7,0,0,2,1,0,0,8,2,0,3,9,0,
-        0,4,0,0,0,0,0,0,0,2,3,0],[0,0,0,6,0,0,0,0,0,0,8,0,0,0,3,0,0,1,0,2,9,8,0,0,0,5,0,3,0,0,0,9,0,6,0,0,0,9,0,4,7,6,0,0,0,8,0,0,0,1,0,4,0,0,0,4,1,5,0,0,0,2,
-          0,0,6,0,0,0,4,0,0,5,0,0,0,7,0,0,0,0,0],[0,0,3,4,0,0,0,6,0,8,0,1,0,6,9,0,0,0,0,0,0,0,0,3,0,2,1,0,2,8,0,0,0,0,0,6,0,4,0,0,5,0,0,3,0,6,0,0,0,0,0,4,8,
-            0,7,8,0,3,0,0,0,0,0,0,0,0,7,4,0,2,0,3,0,3,0,0,0,1,7,0,0]],
+      beginning: this.boardGenerator(),
       squares: Array(9).fill(null),
-      counter: 0
+      //counter: 0
     };
   }
   componentDidMount(){
-    this.setState({squares: this.state.beginning[this.state.counter]});
+    this.setState({squares: this.state.beginning});
+  }
+  generateValidSudokuBoard() {
+  // Function to shuffle an array
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+  }
+}
+
+// Helper function to check if the board satisfies Sudoku rules
+function isValid(board, row, col, num) {
+  // Check row
+  for (let i = 0; i < 9; i++) {
+      if (board[row * 9 + i] === num) return false;
+  }
+
+  // Check column
+  for (let i = 0; i < 9; i++) {
+      if (board[i * 9 + col] === num) return false;
+  }
+
+  // Check 3x3 sub-grid
+  const startRow = Math.floor(row / 3) * 3;
+  const startCol = Math.floor(col / 3) * 3;
+  for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+          if (board[(startRow + i) * 9 + (startCol + j)] === num) return false;
+      }
+  }
+
+  return true;
+}
+
+// Backtracking function to generate a complete Sudoku board
+function solveSudoku(board) {
+  for (let i = 0; i < 81; i++) {
+      if (board[i] === 0) {
+          const row = Math.floor(i / 9);
+          const col = i % 9;
+
+          // Try placing each number from 1 to 9
+          let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+          shuffle(numbers); // Randomize number order to introduce randomness
+          for (let num of numbers) {
+              if (isValid(board, row, col, num)) {
+                  board[i] = num;
+                  if (solveSudoku(board)) {
+                      return true;
+                  }
+                  board[i] = 0; // Backtrack if no solution found
+              }
+          }
+          return false; // No valid number found, need to backtrack
+      }
+  }
+  return true; // Board is filled
+}
+
+// Function to check if the extra rule is satisfied
+function isValidExtraRule(board) {
+  const positions = new Array(9).fill(null).map(() => new Set());
+
+  for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+          const num = board[row * 9 + col];
+          if (num === 0) continue; // Skip empty cells
+          const blockIndex = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+
+          // Check if the number has already appeared in the same position in another block
+          if (positions[blockIndex].has(`${num}-${col % 3}-${row % 3}`)) {
+              return false; // Extra rule violated
+          }
+
+          positions[blockIndex].add(`${num}-${col % 3}-${row % 3}`);
+      }
+  }
+
+  return true; // Extra rule is satisfied
+}
+
+// Function to generate a random Sudoku board with the extra rule
+function generateRandomSudokuBoard() {
+  let board = new Array(81).fill(0); // Empty board
+
+  // Solve the board using backtracking (with randomization)
+  solveSudoku(board);
+
+  // Ensure the extra rule is satisfied (no same number in same relative position across blocks)
+  while (!isValidExtraRule(board)) {
+      board = new Array(81).fill(0); // Reset and try again
+      solveSudoku(board);
+  }
+
+  return board;
+}
+
+  }
+  boardGenerator(){
+    const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
+      1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
+    return this.generateRandomSudokuBoard();
   }
   isCube(index, value){
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
@@ -229,3 +328,30 @@ class Game extends React.Component {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Game />);
+
+
+//*
+//--------------------------------------
+//function solveSudoku(board) {
+  //for (let i = 0; i < 81; i++) {
+    //  if (board[i] === 0) {
+      //    const row = Math.floor(i / 9);
+        //  const col = i % 9;
+
+          // Try placing each number from 1 to 9
+          //let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+//          shuffle(numbers); // Randomize number order to introduce randomness
+  //        for (let num of numbers) {
+    //          if (isValid(board, row, col, num)) {
+      //            board[i] = num;
+        //          if (solveSudoku(board)) {
+          //            return true;
+            //      }
+              //    board[i] = 0; // Backtrack if no solution found
+              //}
+          //}
+          //return false; // No valid number found, need to backtrack
+//      }
+//  }
+  //return true; // Board is filled
+//}
