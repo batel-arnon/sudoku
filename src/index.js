@@ -5,108 +5,33 @@ import './index.css';
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
-      {props.value>0?props.value:null}
+    <button
+      className={`square ${props.highlighted ? 'red-text' : ''}`}  // Apply red-text if highlighted
+      onClick={props.onClick}
+    >
+      {props.value > 0 ? props.value : null}
     </button>
   );
 }
 
 class Board extends React.Component {
   renderSquare(i) {
+    const isHighlighted = this.props.highlighted.includes(i);  // Check if the square is highlighted
     return (
       <Square
         value={this.props.squares[i]}
+        highlighted={isHighlighted}  // Pass the highlighted flag
         onClick={() => this.props.onClick(i)}
       />
     );
   }
 
   render() {
-    return (
-      <div className="board">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-          {this.renderSquare(9)}
-          {this.renderSquare(10)}
-          {this.renderSquare(11)}
-          {this.renderSquare(12)}
-          {this.renderSquare(13)}
-          {this.renderSquare(14)}
-          {this.renderSquare(15)}
-          {this.renderSquare(16)}
-          {this.renderSquare(17)}
-          {this.renderSquare(18)}
-          {this.renderSquare(19)}
-          {this.renderSquare(20)}
-          {this.renderSquare(21)}
-          {this.renderSquare(22)}
-          {this.renderSquare(23)}
-          {this.renderSquare(24)}
-          {this.renderSquare(25)}
-          {this.renderSquare(26)}
-          {this.renderSquare(27)}
-          {this.renderSquare(28)}
-          {this.renderSquare(29)}
-          {this.renderSquare(30)}
-          {this.renderSquare(31)}
-          {this.renderSquare(32)}
-          {this.renderSquare(33)}
-          {this.renderSquare(34)}
-          {this.renderSquare(35)}
-          {this.renderSquare(36)}
-          {this.renderSquare(37)}
-          {this.renderSquare(38)}
-          {this.renderSquare(39)}
-          {this.renderSquare(40)}
-          {this.renderSquare(41)}
-          {this.renderSquare(42)}
-          {this.renderSquare(43)}
-          {this.renderSquare(44)}
-          {this.renderSquare(45)}
-          {this.renderSquare(46)}
-          {this.renderSquare(47)}
-          {this.renderSquare(48)}
-          {this.renderSquare(49)}
-          {this.renderSquare(50)}
-          {this.renderSquare(51)}
-          {this.renderSquare(52)}
-          {this.renderSquare(53)}
-          {this.renderSquare(54)}
-          {this.renderSquare(55)}
-          {this.renderSquare(56)}
-          {this.renderSquare(57)}
-          {this.renderSquare(58)}
-          {this.renderSquare(59)}
-          {this.renderSquare(60)}
-          {this.renderSquare(61)}
-          {this.renderSquare(62)}
-          {this.renderSquare(63)}
-          {this.renderSquare(64)}
-          {this.renderSquare(65)}
-          {this.renderSquare(66)}
-          {this.renderSquare(67)}
-          {this.renderSquare(68)}
-          {this.renderSquare(69)}
-          {this.renderSquare(70)}
-          {this.renderSquare(71)}
-          {this.renderSquare(72)}
-          {this.renderSquare(73)}
-          {this.renderSquare(74)}
-          {this.renderSquare(75)}
-          {this.renderSquare(76)}
-          {this.renderSquare(77)}
-          {this.renderSquare(78)}
-          {this.renderSquare(79)}
-          {this.renderSquare(80)}
-      </div>
-    );
+    const squares = [];
+    for (let i = 0; i < 81; i++) {
+      squares.push(this.renderSquare(i));  // Render each square
+    }
+    return <div className="board">{squares}</div>;
   }
 }
 
@@ -115,50 +40,52 @@ class Game extends React.Component {
     super(props);
     this.state = {
       beginning: this.boardGenerator(),
-      squares: Array(9).fill(null),
-      //counter: 0
+      squares: Array(81).fill(null),
+      highlighted: []  // Array to store highlighted squares' indices
     };
   }
-  componentDidMount(){
-    this.setState({squares: this.state.beginning});
+
+  componentDidMount() {
+    this.setState({ squares: this.state.beginning });
   }
+
   generateValidSudokuBoard() {
   // Function to shuffle an array
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-  }
-}
-
-// Helper function to check if the board satisfies Sudoku rules
-function isValid(board, row, col, num) {
-  // Check row
-  for (let i = 0; i < 9; i++) {
-      if (board[row * 9 + i] === num) return false;
-  }
-
-  // Check column
-  for (let i = 0; i < 9; i++) {
-      if (board[i * 9 + col] === num) return false;
-  }
-
-  // Check 3x3 sub-grid
-  const startRow = Math.floor(row / 3) * 3;
-  const startCol = Math.floor(col / 3) * 3;
-  for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-          if (board[(startRow + i) * 9 + (startCol + j)] === num) return false;
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
       }
-  }
+    }
 
-  return true;
-}
+    // Helper function to check if the board satisfies Sudoku rules
+    function isValid(board, row, col, num) {
+      // Check row
+      for (let i = 0; i < 9; i++) {
+        if (board[row * 9 + i] === num) return false;
+      }
 
-// Backtracking function to generate a complete Sudoku board
-function solveSudoku(board) {
-  for (let i = 0; i < 81; i++) {
-      if (board[i] === 0) {
+      // Check column
+      for (let i = 0; i < 9; i++) {
+        if (board[i * 9 + col] === num) return false;
+      }
+
+      // Check 3x3 sub-grid
+      const startRow = Math.floor(row / 3) * 3;
+      const startCol = Math.floor(col / 3) * 3;
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (board[(startRow + i) * 9 + (startCol + j)] === num) return false;
+        }
+      }
+
+      return true;
+    }
+
+    // Backtracking function to generate a complete Sudoku board
+    function solveSudoku(board) {
+      for (let i = 0; i < 81; i++) {
+        if (board[i] === 0) {
           const row = Math.floor(i / 9);
           const col = i % 9;
 
@@ -166,63 +93,84 @@ function solveSudoku(board) {
           let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
           shuffle(numbers); // Randomize number order to introduce randomness
           for (let num of numbers) {
-              if (isValid(board, row, col, num)) {
-                  board[i] = num;
-                  if (solveSudoku(board)) {
-                      return true;
-                  }
-                  board[i] = 0; // Backtrack if no solution found
+            if (isValid(board, row, col, num)) {
+              board[i] = num;
+              if (solveSudoku(board)) {
+                return true;
               }
+              board[i] = 0; // Backtrack if no solution found
+            }
           }
           return false; // No valid number found, need to backtrack
+        }
       }
-  }
-  return true; // Board is filled
-}
+      return true; // Board is filled
+    }
 
-// Function to check if the extra rule is satisfied
-function isValidExtraRule(board) {
-  const positions = new Array(9).fill(null).map(() => new Set());
-
-  for (let row = 0; row < 9; row++) {
-      for (let col = 0; col < 9; col++) {
+    // Function to check if the extra rule is satisfied
+    function isValidExtraRule(board) {
+      const positions = new Array(9).fill(null).map(() => new Set());
+    
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
           const num = board[row * 9 + col];
           if (num === 0) continue; // Skip empty cells
-          const blockIndex = Math.floor(row / 3) * 3 + Math.floor(col / 3);
-
-          // Check if the number has already appeared in the same position in another block
-          if (positions[blockIndex].has(`${num}-${col % 3}-${row % 3}`)) {
-              return false; // Extra rule violated
+    
+          // חישוב המיקום היחסי בתוך הבלוק
+          const relativePos = `${col % 3}-${row % 3}`;
+          // בדוק אם המספר כבר נמצא במיקום הזה בתוך הבלוק
+          // אם הסט עבור הבלוק לא מאותחל נכון (למקרה קיצוני), אתחיל אותו מחדש
+          if (!positions[num]) {
+            positions[num] = new Set();
           }
 
-          positions[blockIndex].add(`${num}-${col % 3}-${row % 3}`);
+          if (positions[num].has(relativePos)) {
+            return false; // אם המספר נמצא, הכלל לא מתקיים
+          }
+    
+          // הוסף את המיקום היחסי של המספר לתוך הבלוק
+          positions[num].add(relativePos);
+        }
       }
-  }
+    
+      return true; // אם לא נמצאה חזרה של מספרים, הכלל מתקיים
+    }
+    
 
-  return true; // Extra rule is satisfied
-}
+    // Function to generate a random Sudoku board with the extra rule
+    let board = new Array(81).fill(0); // Empty board
 
-// Function to generate a random Sudoku board with the extra rule
-function generateRandomSudokuBoard() {
-  let board = new Array(81).fill(0); // Empty board
+    // Solve the board using backtracking (with randomization)
+    solveSudoku(board);
 
-  // Solve the board using backtracking (with randomization)
-  solveSudoku(board);
-
-  // Ensure the extra rule is satisfied (no same number in same relative position across blocks)
-  while (!isValidExtraRule(board)) {
+    // Ensure the extra rule is satisfied (no same number in same relative position across blocks)
+    while (!isValidExtraRule(board)) {
       board = new Array(81).fill(0); // Reset and try again
       solveSudoku(board);
+    }
+    return board;
   }
-
-  return board;
-}
-
+  
+  clearBoardPositions(board, shapes) {
+    // Create a Set from shapes array for faster lookup
+    const shapeSet = new Set(shapes);
+  
+    // Loop through the board and set values to 0 for indices not in the shapes array
+    for (let i = 0; i < board.length; i++) {
+      if (!shapeSet.has(i)) {
+        board[i] = 0;  // Set the value to 0 if the index is not in the shapes
+      }
+    }
+  
+    return board;  // Return the modified board
   }
+  
   boardGenerator(){
-    const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
-      1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
-    return this.generateRandomSudokuBoard();
+    //const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
+    //  1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
+    const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,45,48,50,53,54,62,64,70,74,75,67,77,78],[80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74]];
+    const board = this.generateValidSudokuBoard();
+    return this.clearBoardPositions(board, shapes[1]);
   }
   isCube(index, value){
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
@@ -236,19 +184,21 @@ function generateRandomSudokuBoard() {
     }
     for (let i = 0; i < cubes[ind].length; i++) {
       if (this.state.squares[cubes[ind][i]]===value){
-        return true;
+        if (cubes[ind][i]!=index)
+          return cubes[ind][i];
       }
     }
-    return false;
+    return -1;
   }
   isOfek(index, value){
     let begin_state = 9*Math.floor(index/9);
     for (let i = begin_state; i < begin_state+9; i++) {
       if(this.state.squares[i] === value){
-        return true;
+        if (i!=index)
+          return i;
       }
     }
-    return false;
+    return -1;
   }
   isAnah(index, value){
     let begin_state = index;
@@ -257,10 +207,11 @@ function generateRandomSudokuBoard() {
     }
     for (let i = begin_state; i < 81; i+=9) {
       if(this.state.squares[i] === value){
-        return true;
+        if (i!=index)
+          return i;
       }
     }
-    return false;
+    return -1;
   }
   isExtra(index, value){
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
@@ -274,19 +225,56 @@ function generateRandomSudokuBoard() {
     }
     for (let i = 0; i < cubes.length; i++) {
       if (this.state.squares[cubes[i][index_place_in_the_cube]]===value){
-        return true;
+        if (index != cubes[i][index_place_in_the_cube])
+          return cubes[i][index_place_in_the_cube];
       }
     }
-    return false;
+    return -1;
   }
   insertValueToSquares(index, value){
     const squares = this.state.squares;
     squares[index] = value;
     this.setState({squares: squares})
   }
-  isValid(index, value){
-    return !(this.isAnah(index, value) || this.isCube(index, value) || this.isOfek(index, value) || this.isExtra(index, value));
+
+  // Updated changeColor function
+  changeColor(list_of_indexes_to_change_color) {
+    this.setState(prevState => ({
+      highlighted: prevState.highlighted.concat(list_of_indexes_to_change_color.flat())  // Add the arr to highlighted state
+    }));
+    //console.log(this.state.highlighted);
   }
+  removeHighlighted(list_of_indexes_to_change_color){
+    const highkight = this.state.highlighted.filter((i) => !list_of_indexes_to_change_color.includes(i));
+    this.setState({highlighted: highkight});
+  }
+  // Check validity and call changeColor
+  isValid(index, value, prev) {
+    let anah = this.isAnah(index, value);
+    let cube = this.isCube(index, value);
+    let ofek = this.isOfek(index, value);
+    let extra = this.isExtra(index, value);
+    let all = !(anah >= 0 || cube >= 0 || ofek >= 0 || extra >= 0);
+
+    if (!all) {
+      const list_of_indexes_to_change_color = [];
+      list_of_indexes_to_change_color.push(index);
+      if (anah != -1) list_of_indexes_to_change_color.push(anah);
+      if (cube != -1) list_of_indexes_to_change_color.push(cube);
+      if (ofek != -1) list_of_indexes_to_change_color.push(ofek);
+      if (extra != -1) list_of_indexes_to_change_color.push(extra);
+      this.changeColor(list_of_indexes_to_change_color);
+    }
+    else{
+      let anah0 = this.isAnah(index, prev);
+      let cube0 = this.isCube(index, prev);
+      let ofek0 = this.isOfek(index, prev);
+      let extra0 = this.isExtra(index, prev);
+      this.removeHighlighted([index,anah0,cube0,ofek0,extra0]);
+    }
+    return all;
+  }
+
   isFull(squares){
     for (let i = 0; i < this.state.squares.length; i++) {
       if(this.state.squares[i] === 0){
@@ -299,26 +287,30 @@ function generateRandomSudokuBoard() {
     const squares = this.state.squares;
     const val = prompt("insert number to add");
     let value = parseInt(val, 10);
-
-    if (this.isFull(squares)) {
-      this.setState({counter: this.state.counter+1});
-      this.setState({squares: this.state.beginning[this.state.counter]});
-    }
-    if(value>0 && value<=9 && this.isValid(i, value)){
+    let prev = 0;
+    
+    if (value > 0 && value <= 9) {
+      prev = this.state.squares[i];
+      this.isValid(i, value, prev);
       this.insertValueToSquares(i, value);
+    } 
+    else {
+      alert("not valid number");
     }
-    else{
-      alert("not valid");
+    if (this.isFull(squares)) {
+      this.setState({ counter: this.state.counter + 1 });
+      this.setState({ squares: this.state.beginning[this.state.counter] });
     }
   }
-
+  
   render() {
     return (
       <div className="game">
-          <Board
-            squares={this.state.squares}
-            onClick={i => this.handleClick(i)}
-          />
+        <Board
+          squares={this.state.squares}
+          highlighted={this.state.highlighted}  // Pass highlighted state to Board
+          onClick={i => this.handleClick(i)}
+        />
       </div>
     );
   }

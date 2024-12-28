@@ -80,3 +80,28 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+.square {
+  border: 1px solid #ccc; /* Default thin border */
+}
+.red-text {
+  color: red;
+}
+
+.board .square:nth-child(3n) {
+  border-right: 3px solid #000; /* Bold vertical line every 3 cells */
+}
+
+.board .square:nth-child(9n + 1) {
+  border-left: 3px solid #000; /* Bold left border every 9th cell */
+}
+
+.board .square:nth-child(-n+9) {
+  border-top: 3px solid #000; /* Bold top line for the first row */
+}
+
+.board .square:nth-child(n+73):nth-child(-n+81),
+.board .square:nth-child(n+19):nth-child(-n+27),
+.board .square:nth-child(n+46):nth-child(-n+54) {
+  border-bottom: 3px solid #000; /* Bold bottom line for the last row */
+}
