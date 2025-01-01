@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
@@ -41,7 +41,8 @@ class Game extends React.Component {
     this.state = {
       beginning: this.boardGenerator(),
       squares: Array(81).fill(null),
-      highlighted: []  // Array to store highlighted squares' indices
+      highlighted: [],  // Array to store highlighted squares' indices
+      selectedSquare: null,  
     };
   }
 
@@ -231,6 +232,7 @@ class Game extends React.Component {
     }
     return -1;
   }
+  //not in use rn:
   insertValueToSquares(index, value){
     const squares = this.state.squares;
     squares[index] = value;
@@ -283,26 +285,45 @@ class Game extends React.Component {
     }
     return true;
   }
-  handleClick(i) {
-    const squares = this.state.squares;
-    const val = prompt("insert number to add");
-    let value = parseInt(val, 10);
+  handleNumberSelection(value) {
+    const { selectedSquare, squares } = this.state;
     let prev = 0;
-    
-    if (value > 0 && value <= 9) {
-      prev = this.state.squares[i];
-      this.isValid(i, value, prev);
-      this.insertValueToSquares(i, value);
-    } 
-    else {
-      alert("not valid number");
+    if (selectedSquare !== null) {
+      prev = this.state.squares[selectedSquare];
+      this.isValid(selectedSquare, value, prev);
+      const newSquares = [...squares];  // Copy the squares array to avoid direct mutation
+      newSquares[selectedSquare] = value;  // Set the number at the selected square
+      this.setState({ squares: newSquares, selectedSquare: null });  // Update state and reset selected square
+      
+      //this.insertValueToSquares(i, value);
+      if (this.isFull(squares)) {
+        //this.setState({ counter: this.state.counter + 1 });
+        //this.setState({ squares: this.state.beginning[this.state.counter] });
+      }
     }
-    if (this.isFull(squares)) {
-      this.setState({ counter: this.state.counter + 1 });
-      this.setState({ squares: this.state.beginning[this.state.counter] });
-    }
+  }  
+
+  handleClick(i) {
+    //const squares = this.state.squares;
+    //const val = prompt("insert number to add");
+    this.setState({ selectedSquare: i });
+ 
   }
-  
+  renderNumberButtons() {
+    if (this.state.selectedSquare === null) {
+      return null; 
+    }
+    const buttons = [];
+    for (let i = 1; i <= 9; i++) {
+      buttons.push(
+        <button key={i} onClick={() => this.handleNumberSelection(i)}>
+          {i}
+        </button>
+      );
+    }
+    return <div className="number-buttons">{buttons}</div>;
+  }
+
   render() {
     return (
       <div className="game">
@@ -311,6 +332,7 @@ class Game extends React.Component {
           highlighted={this.state.highlighted}  // Pass highlighted state to Board
           onClick={i => this.handleClick(i)}
         />
+        {this.renderNumberButtons()}  {/* **CHANGED**: Render number buttons below the board */}
       </div>
     );
   }
