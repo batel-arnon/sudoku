@@ -43,6 +43,7 @@ class Game extends React.Component {
       squares: Array(81).fill(null),
       highlighted: [],  // Array to store highlighted squares' indices
       selectedSquare: null,  
+      buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
     };
   }
 
@@ -169,7 +170,7 @@ class Game extends React.Component {
   boardGenerator(){
     //const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
     //  1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
-    const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,45,48,50,53,54,62,64,70,74,75,67,77,78],[80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74]];
+    const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,45,48,50,53,54,62,64,70,74,75,67,77,78],[80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74,79,77]];
     const board = this.generateValidSudokuBoard();
     return this.clearBoardPositions(board, shapes[1]);
   }
@@ -299,17 +300,26 @@ class Game extends React.Component {
       if (this.isFull(squares)) {
         //this.setState({ counter: this.state.counter + 1 });
         //this.setState({ squares: this.state.beginning[this.state.counter] });
+        alert("congrats! you finished!");
       }
     }
   }  
 
   handleClick(i) {
-    //const squares = this.state.squares;
-    //const val = prompt("insert number to add");
-    this.setState({ selectedSquare: i });
- 
+    const row = Math.floor(i / 9);
+    const col = i % 9;
+
+    // Set the position where the number buttons will appear
+    this.setState({
+      selectedSquare: i,
+      buttonPosition: {
+        top: row * 90 + 100,  // Adjust top position
+        left: col * 90 + 580, // Adjust left position
+      },
+    }); 
   }
   renderNumberButtons() {
+    const { buttonPosition, selectedSquare, squares } = this.state;
     if (this.state.selectedSquare === null) {
       return null; 
     }
@@ -321,13 +331,32 @@ class Game extends React.Component {
         </button>
       );
     }
-    return <div className="number-buttons">{buttons}</div>;
+    return <div className="number-buttons-container"
+      style={{
+        position: "absolute",
+        top: buttonPosition.top + "px",
+        left: buttonPosition.left + "px",
+        display: "flex",
+        gap: "2px", // Adjust buttons to be closer together
+        flexDirection: "row",
+      }}
+      >{buttons}</div>;
   }
 
   render() {
+    const { buttonPosition, selectedSquare, squares } = this.state;
     return (
       <div className="game">
         <Board
+          {...squares.map((square, index) => (
+          <div
+            key={index}
+            className={`square ${square ? "filled" : ""}`}
+            onClick={() => this.handleClick(index)}
+          >
+            {square}
+          </div>
+          ))}
           squares={this.state.squares}
           highlighted={this.state.highlighted}  // Pass highlighted state to Board
           onClick={i => this.handleClick(i)}
@@ -342,30 +371,3 @@ class Game extends React.Component {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Game />);
-
-
-//*
-//--------------------------------------
-//function solveSudoku(board) {
-  //for (let i = 0; i < 81; i++) {
-    //  if (board[i] === 0) {
-      //    const row = Math.floor(i / 9);
-        //  const col = i % 9;
-
-          // Try placing each number from 1 to 9
-          //let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-//          shuffle(numbers); // Randomize number order to introduce randomness
-  //        for (let num of numbers) {
-    //          if (isValid(board, row, col, num)) {
-      //            board[i] = num;
-        //          if (solveSudoku(board)) {
-          //            return true;
-            //      }
-              //    board[i] = 0; // Backtrack if no solution found
-              //}
-          //}
-          //return false; // No valid number found, need to backtrack
-//      }
-//  }
-  //return true; // Board is filled
-//}

@@ -33,6 +33,8 @@ h1 {
 }
 
 .square {
+  width: 90px;
+  height: 90px;
   background-color: #fff;
   border: 2px solid #ccc;
   display: flex;
@@ -116,4 +118,19 @@ ol, ul {
   font-size: 16px;
   margin: 5px;
   cursor: pointer;
+}
+button {
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+.number-buttons-container {
+  position: absolute;
+  display: flex;
+  gap: 2px;
+  flex-direction: row;
 }
