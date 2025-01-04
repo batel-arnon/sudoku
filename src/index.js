@@ -170,9 +170,11 @@ class Game extends React.Component {
   boardGenerator(){
     //const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
     //  1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
-    const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,45,48,50,53,54,62,64,70,74,75,67,77,78],[80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74,79,77]];
+    const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,45,48,50,53,54,62,64,70,74,75,67,77,78],
+    [80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74,79,77],
+    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79]];
     const board = this.generateValidSudokuBoard();
-    return this.clearBoardPositions(board, shapes[1]);
+    return this.clearBoardPositions(board, shapes[2]);
   }
   isCube(index, value){
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
@@ -305,10 +307,14 @@ class Game extends React.Component {
   }
 
   isFull(squares){
+    let cnt = 0;
     for (let i = 0; i < this.state.squares.length; i++) {
       if(this.state.squares[i] === 0){
-        return false;
+        cnt ++;
       }
+    }
+    if (cnt>1){
+      return false;
     }
     return true;
   }
@@ -327,6 +333,7 @@ class Game extends React.Component {
         //this.setState({ counter: this.state.counter + 1 });
         //this.setState({ squares: this.state.beginning[this.state.counter] });
         alert("congrats! you finished!");
+        /////suggest new game- harder one.
       }
     }
   }  
@@ -339,7 +346,7 @@ class Game extends React.Component {
     this.setState({
       selectedSquare: i,
       buttonPosition: {
-        top: row * 90 + 100,  // Adjust top position
+        top: row * 90 + 130,  // Adjust top position
         left: col * 90 + 580, // Adjust left position
       },
     }); 
