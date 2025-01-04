@@ -251,31 +251,57 @@ class Game extends React.Component {
     const highkight = this.state.highlighted.filter((i) => !list_of_indexes_to_change_color.includes(i));
     this.setState({highlighted: highkight});
   }
-  // Check validity and call changeColor
-  isValid(index, value, prev) {
+  isValid(index, value){
     let anah = this.isAnah(index, value);
     let cube = this.isCube(index, value);
     let ofek = this.isOfek(index, value);
     let extra = this.isExtra(index, value);
     let all = !(anah >= 0 || cube >= 0 || ofek >= 0 || extra >= 0);
-
-    if (!all) {
+    return [anah, cube, ofek, extra, all];
+  }
+  removingNoNecc(){
+    const list_to_remove = [];
+    for(let i = 0;i < this.state.highlighted.length;i++){
+      let ind = this.state.highlighted[i];
+      let val = this.state.squares[ind];
+      let det = this.isValid(ind, val);
+  
+      if (det[4]){
+        list_to_remove.push(ind);
+      }
+    }
+    return list_to_remove;
+  }
+  // Check validity and call changeColor
+  colorNecc(index, value, prev) {
+    const det = this.isValid(index, value);
+    const list_to_remove = [];
+    if (value === 0){
+      let det0 = this.isValid(index, prev);
+      this.removeHighlighted([index, det0[0], det0[1], det0[2], det0[3]]);
+      return true;
+    }
+    if (!det[4]) {
       const list_of_indexes_to_change_color = [];
       list_of_indexes_to_change_color.push(index);
-      if (anah != -1) list_of_indexes_to_change_color.push(anah);
-      if (cube != -1) list_of_indexes_to_change_color.push(cube);
-      if (ofek != -1) list_of_indexes_to_change_color.push(ofek);
-      if (extra != -1) list_of_indexes_to_change_color.push(extra);
+      if (det[0] != -1) list_of_indexes_to_change_color.push(det[0]);
+      if (det[1] != -1) list_of_indexes_to_change_color.push(det[1]);
+      if (det[2] != -1) list_of_indexes_to_change_color.push(det[2]);
+      if (det[3] != -1) list_of_indexes_to_change_color.push(det[3]);
       this.changeColor(list_of_indexes_to_change_color);
     }
     else{
-      let anah0 = this.isAnah(index, prev);
-      let cube0 = this.isCube(index, prev);
-      let ofek0 = this.isOfek(index, prev);
-      let extra0 = this.isExtra(index, prev);
-      this.removeHighlighted([index,anah0,cube0,ofek0,extra0]);
+      let det0 = this.isValid(index, prev);
+      this.removeHighlighted([index, det0[0], det0[1], det0[2], det0[3]]);
+      //list_to_remove.push(index);
+      //list_to_remove.push(anah0);
+      //list_to_remove.push(cube0);
+      //list_to_remove.push(ofek0);
+      //list_to_remove.push(extra0);
     }
-    return all;
+    //list_to_remove = this.removingNoNecc();
+    //this.removeHighlighted(list_to_remove);
+    return det[4];
   }
 
   isFull(squares){
@@ -291,7 +317,7 @@ class Game extends React.Component {
     let prev = 0;
     if (selectedSquare !== null) {
       prev = this.state.squares[selectedSquare];
-      this.isValid(selectedSquare, value, prev);
+      this.colorNecc(selectedSquare, value, prev);
       const newSquares = [...squares];  // Copy the squares array to avoid direct mutation
       newSquares[selectedSquare] = value;  // Set the number at the selected square
       this.setState({ squares: newSquares, selectedSquare: null });  // Update state and reset selected square
@@ -340,7 +366,10 @@ class Game extends React.Component {
         gap: "2px", // Adjust buttons to be closer together
         flexDirection: "row",
       }}
-      >{buttons}</div>;
+      >{buttons}
+      {squares[selectedSquare] !== 0 && (
+      <button onClick={() => this.handleNumberSelection(0)}>Clr</button>
+      )}</div>;
   }
 
   render() {
