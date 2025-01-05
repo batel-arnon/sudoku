@@ -330,9 +330,17 @@ class Game extends React.Component {
       
       //this.insertValueToSquares(i, value);
       if (this.isFull(squares)) {
-        //this.setState({ counter: this.state.counter + 1 });
-        //this.setState({ squares: this.state.beginning[this.state.counter] });
         alert("congrats! you finished!");
+        const refreshButton = document.createElement("button");
+        refreshButton.textContent = "play another game!";
+        
+        // Append the button to the body of the page
+        document.body.appendChild(refreshButton);
+
+        // Add click event to the button to reload the page
+        refreshButton.addEventListener("click", function() {
+          window.location.reload();  // This will refresh the page
+        });
         /////suggest new game- harder one.
       }
     }
