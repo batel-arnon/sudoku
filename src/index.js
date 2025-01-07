@@ -44,7 +44,6 @@ class Game extends React.Component {
       highlighted: [],  // Array to store highlighted squares' indices
       selectedSquare: null,  
       buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
-      level: 2
     };
   }
 
@@ -168,14 +167,14 @@ class Game extends React.Component {
     return board;  // Return the modified board
   }
   
-  boardGenerator(){
+  boardGenerator(level = 2){
     //const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
     //  1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
     const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,45,48,50,53,54,62,64,70,74,75,67,77,78],
     [80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74,79,77],
     [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79]];
     const board = this.generateValidSudokuBoard();
-    return this.clearBoardPositions(board, shapes[this.state.level]);
+    return this.clearBoardPositions(board, shapes[level]);
   }
   isCube(index, value){
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
@@ -331,18 +330,47 @@ class Game extends React.Component {
       
       //this.insertValueToSquares(i, value);
       if (this.isFull(squares)) {
+        function setLevel(level){
+          this.setState({
+            beginning: this.boardGenerator(level),
+            squares: Array(81).fill(null),
+            highlighted: [],  // Array to store highlighted squares' indices
+            selectedSquare: null,  
+            buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
+          });
+        }
         alert("congrats! you finished!");
         const refreshButton = document.createElement("button");
         refreshButton.textContent = "play another game!";
-        if (this.state.level != 0){
-          this.setState({level: level--});
-        }
         // Append the button to the body of the page
         document.body.appendChild(refreshButton);
 
         // Add click event to the button to reload the page
         refreshButton.addEventListener("click", function() {
-          window.location.reload();  // This will refresh the page
+          // Create the buttons dynamically
+          const easyButton = document.createElement('button');
+          easyButton.textContent = 'Easy';
+          easyButton.addEventListener('click', function() {
+              setLevel(2); // Easy level
+          });
+          
+          const mediumButton = document.createElement('button');
+          mediumButton.textContent = 'Medium';
+          mediumButton.addEventListener('click', function() {
+              setLevel(1); // Medium level
+          });
+          
+          const hardButton = document.createElement('button');
+          hardButton.textContent = 'Hard';
+          hardButton.addEventListener('click', function() {
+              setLevel(0); // Hard level
+          });
+
+          // Append buttons to the levelButtons div
+          document.body.appendChild(easyButton);
+          document.body.appendChild(mediumButton);
+          document.body.appendChild(hardButton);
+
         });
         /////suggest new game- harder one.
       }
