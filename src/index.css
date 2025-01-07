@@ -45,7 +45,7 @@ body, html {
 @media (min-width: 1200px) {
   #root {
       width: 90%; /* Take up less space on bigger screens */
-      height: 70vh; /* Adjust height to suit bigger screens */
+      height: 100%; /* Adjust height to suit bigger screens */
   }
 }
 
@@ -85,19 +85,20 @@ header nav ul li a {
 }
 
 .game {
-  display: flex;
+  display: grid;
+  align-self: center;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 10px; /* Optional: add some padding */
+  /*padding: 10px;  Optional: add some padding */
 }
 
 .board {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
-  width: 100%;
+  width: 85%;
   max-width: 100%; /* Set a maximum width for large screens */
   max-height: 100%; /* Set a maximum height for large screens */
   gap: 0; /* Remove space between cells */
@@ -178,9 +179,9 @@ ol, ul {
   margin: 5px;
   cursor: pointer;
 }
-button {
-  width: 30px;
-  height: 30px;
+.button {
+  width: 90px;
+  height: 90px;
   font-size: 14px;
   cursor: pointer;
   background-color: #fff;

@@ -321,6 +321,15 @@ class Game extends React.Component {
   handleNumberSelection(value) {
     const { selectedSquare, squares } = this.state;
     let prev = 0;
+    function setLevel(level){
+      this.setState({
+        beginning: this.boardGenerator(level),
+        squares: Array(81).fill(null),
+        highlighted: [],  // Array to store highlighted squares' indices
+        selectedSquare: null,  
+        buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
+      });
+    }
     if (selectedSquare !== null) {
       prev = this.state.squares[selectedSquare];
       this.colorNecc(selectedSquare, value, prev);
@@ -330,15 +339,6 @@ class Game extends React.Component {
       
       //this.insertValueToSquares(i, value);
       if (this.isFull(squares)) {
-        function setLevel(level){
-          this.setState({
-            beginning: this.boardGenerator(level),
-            squares: Array(81).fill(null),
-            highlighted: [],  // Array to store highlighted squares' indices
-            selectedSquare: null,  
-            buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
-          });
-        }
         alert("congrats! you finished!");
         const refreshButton = document.createElement("button");
         refreshButton.textContent = "play another game!";
@@ -386,7 +386,7 @@ class Game extends React.Component {
       selectedSquare: i,
       buttonPosition: {
         top: row * 90 + 130,  // Adjust top position
-        left: col * 90 + 580, // Adjust left position
+        left: col * 90 +20, // Adjust left position
       },
     }); 
   }
@@ -421,7 +421,14 @@ class Game extends React.Component {
   render() {
     const { buttonPosition, selectedSquare, squares } = this.state;
     return (
-      <div className="game">
+      <div className="game"><header>
+        <h1>SUDOKA</h1>
+          <nav>
+            <ul>
+              <li><a href="instructions.html">Instructions</a></li>
+            </ul>
+        </nav>
+        </header>
         <Board
           {...squares.map((square, index) => (
           <div
