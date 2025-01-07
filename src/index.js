@@ -44,6 +44,7 @@ class Game extends React.Component {
       highlighted: [],  // Array to store highlighted squares' indices
       selectedSquare: null,  
       buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
+      level: 2
     };
   }
 
@@ -174,7 +175,7 @@ class Game extends React.Component {
     [80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74,79,77],
     [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79]];
     const board = this.generateValidSudokuBoard();
-    return this.clearBoardPositions(board, shapes[2]);
+    return this.clearBoardPositions(board, shapes[this.state.level]);
   }
   isCube(index, value){
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
@@ -333,7 +334,9 @@ class Game extends React.Component {
         alert("congrats! you finished!");
         const refreshButton = document.createElement("button");
         refreshButton.textContent = "play another game!";
-        
+        if (this.state.level != 0){
+          this.setState({level: level--});
+        }
         // Append the button to the body of the page
         document.body.appendChild(refreshButton);
 

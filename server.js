@@ -17,7 +17,7 @@ app.get('/app', (req, res) => {
 // Serve static files from the React app (after building)
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
 
