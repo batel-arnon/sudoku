@@ -14,6 +14,25 @@ function Square(props) {
   );
 }
 
+class Numbers extends React.Component {
+  render(){
+    const buttons = [];
+  for (let i = 1; i <= 9; i++) {
+    buttons.push(
+      <button key={i} onClick={() => this.props.handleNumberSelection(i)}>
+        {i}
+      </button>
+    );
+  }
+  return (
+    <div className="number-buttons-container">
+      {buttons}
+    <button onClick={() => this.props.handleNumberSelection(0)}>Clr</button>
+    </div>
+  );
+  }
+}
+
 class Board extends React.Component {
   renderSquare(i) {
     const isHighlighted = this.props.highlighted.includes(i);  // Check if the square is highlighted
@@ -43,7 +62,7 @@ class Game extends React.Component {
       squares: Array(81).fill(null),
       highlighted: [],  // Array to store highlighted squares' indices
       selectedSquare: null,  
-      buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
+      buttonPosition: { top: 100, left: 500 }, // Store position of number buttons
     };
   }
 
@@ -378,44 +397,17 @@ class Game extends React.Component {
   }  
 
   handleClick(i) {
-    const row = Math.floor(i / 9);
-    const col = i % 9;
+    //const row = Math.floor(i / 9);
+    //const col = i % 9;
 
     // Set the position where the number buttons will appear
     this.setState({
       selectedSquare: i,
-      buttonPosition: {
-        top: row * 90 + 130,  // Adjust top position
-        left: col * 90 +20, // Adjust left position
-      },
+      //buttonPosition: {
+ //       top: row * 90 + 130,  // Adjust top position
+   //     left: col * 90 +30, // Adjust left position
+     // },
     }); 
-  }
-  renderNumberButtons() {
-    const { buttonPosition, selectedSquare, squares } = this.state;
-    if (this.state.selectedSquare === null) {
-      return null; 
-    }
-    const buttons = [];
-    for (let i = 1; i <= 9; i++) {
-      buttons.push(
-        <button key={i} onClick={() => this.handleNumberSelection(i)}>
-          {i}
-        </button>
-      );
-    }
-    return <div className="number-buttons-container"
-      style={{
-        position: "absolute",
-        top: buttonPosition.top + "px",
-        left: buttonPosition.left + "px",
-        display: "flex",
-        gap: "2px", // Adjust buttons to be closer together
-        flexDirection: "row",
-      }}
-      >{buttons}
-      {squares[selectedSquare] !== 0 && (
-      <button onClick={() => this.handleNumberSelection(0)}>Clr</button>
-      )}</div>;
   }
 
   render() {
@@ -427,8 +419,10 @@ class Game extends React.Component {
             <ul>
               <li><a href="instructions.html">Instructions</a></li>
             </ul>
-        </nav>
+        </nav>  
         </header>
+        <div className='coverboard'>
+        <Numbers handleNumberSelection={i => this.handleNumberSelection(i)} />
         <Board
           {...squares.map((square, index) => (
           <div
@@ -443,7 +437,8 @@ class Game extends React.Component {
           highlighted={this.state.highlighted}  // Pass highlighted state to Board
           onClick={i => this.handleClick(i)}
         />
-        {this.renderNumberButtons()}  {/* **CHANGED**: Render number buttons below the board */}
+        </div>
+        
       </div>
     );
   }
