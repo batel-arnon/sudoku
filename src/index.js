@@ -423,17 +423,7 @@ class Game extends React.Component {
         </header>
         <div className='coverboard'>
         <Numbers handleNumberSelection={i => this.handleNumberSelection(i)} />
-        <Board
-          {...squares.map((square, index) => (
-          <div
-            key={index}
-            className={`square ${square ? "filled" : ""}`}
-            onClick={() => this.handleClick(index)}
-          >
-            {square}
-          </div>
-          ))}
-          squares={this.state.squares}
+        <Board squares={this.state.squares}
           highlighted={this.state.highlighted}  // Pass highlighted state to Board
           onClick={i => this.handleClick(i)}
         />
