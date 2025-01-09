@@ -7,22 +7,17 @@
 
 /* Make the body take full height and width */
 body, html {
-  height: 100vh;
-  width: 100vw;
+  height: 98vh;
+  width: 98vw;
   background-color: #f0f0f0;
+  overflow-x: clip;
 }
 
 /* Game container - The game area */
 #root {
-  width: 100vw; /* Use a percentage to make it responsive */
-  height: 100vh; /* Use viewport height to make it responsive */
+  width: 98vw; /* Use a percentage to make it responsive */
+  height: 98vh; /* Use viewport height to make it responsive */
 }
-
-/* Optional: Responsive adjustments for phones */
-.board {
-  max-width: 100%;
-  max-height: 100%;
-} 
 
 body {
   margin: 0;
@@ -30,7 +25,7 @@ body {
   justify-content: center;
   align-items: center;
   display: flex;
-  height: 100vh;
+  height: 98vh;
   background-color: #f0f0f0;
   font: 16px "Century Gothic", Futura, sans-serif;
 }
@@ -65,8 +60,8 @@ header nav ul li a {
   align-self: center;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  width: 98vw;
+  height: 98vh;
 }
 
 .coverboard{
@@ -75,18 +70,16 @@ header nav ul li a {
   align-items: center;
   align-self: center;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: calc((99vh - 147px)*1.1);
-  max-width: calc((99vh - 147px)*1.1);
-  max-height: calc((99vh - 147px));
-  height: calc((99vh - 147px));
+  width: calc((98vh - 147px)*1.1);
+  max-width: calc((98vh - 147px)*1.1);
+  max-height: calc((98vh - 147px));
+  height: calc((98vh - 147px));
+  gap: 0; /* Remove space between cells */
 }
 
 .number-buttons-container {
   display: grid;
-  aspect-ratio: 0.1;
-  grid-template-rows: repeat(10, 1fr);
-  font-size: medium;
+  font-size: 7em;
   height: 100%;
   min-height:100%;
 }
@@ -96,9 +89,6 @@ header nav ul li a {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
-  max-height: calc(100vh - 146px);
-  height: calc(100vh - 146px);
-  gap: 0; /* Remove space between cells */
   aspect-ratio: 1; /* Maintain square aspect ratio */
 }
 
@@ -113,7 +103,7 @@ header nav ul li a {
   /* Ensure squares fill the grid cell */
   box-sizing: border-box; /* Ensure border is included in element's width/height */
   aspect-ratio: 1; /* Keep squares square */
-  min-height: 30px;
+  min-height: 20px;
   font-size: 5em;
 }
 
@@ -158,7 +148,7 @@ ol, ul {
 }
 
 .button {
-  font-size: 2em;
+  font-size: 4em;
   cursor: pointer;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -171,30 +161,51 @@ ol, ul {
   .number-buttons-container {
     aspect-ratio: 10;
     grid-template-columns: repeat(10, 1fr);
+    height: min(calc((98vh - 146px)/11),calc(98vw*0.1));
+    min-height:min(calc((98vh - 146px)/11),calc(98vw*0.1));
+    width: min(calc((98vh - 146px)*10/11),98vw);
+    max-width: min(calc((98vh - 146px)*10/11),98vw);
   }
   .coverboard{
     display: grid;
     grid-template-rows: repeat(2, 1fr);
-    width: calc((99vh - 147px)*10/11);
-    height: calc((99vh - 147px));
-
+    width: min(calc((98vh - 146px)*10/11),98vw);
+    height: calc((98vh - 146px));
+  	max-width: min(calc((98vh - 146px)*10/11),98vw);
+  	max-height: calc(98vh - 146px);
+  }
+  .board{
+    height:    min(calc((98vh - 146px)*10/11),98vw);  
+    width:     min(calc((98vh - 146px)*10/11),98vw);
+  	max-width: min(calc((98vh - 146px)*10/11),98vw);
+    max-height:min(calc((98vh - 146px)*10/11),98vw);
   }
 }
 @media (orientation: landscape) {
   .number-buttons-container {
     aspect-ratio: 0.1;
     grid-template-rows: repeat(10, 1fr);
+    height: calc(98vh - 146px);
+    min-height:calc(98vh - 146px);
+    width: calc((98vh - 146px)/10);
+    max-width: calc((98vh - 146px)/10);
   }
   .coverboard{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-  	width: calc((100vh - 147px)*1.1);
-  	max-width: calc((100vh - 147px)*1.1);
-  	max-height: calc(100vh - 147px);
-  	height: calc(100vh - 147px);
+  	width: calc((98vh - 147px)*1.1);
+  	max-width: calc((98vh - 147px)*1.1);
+  	max-height: calc(98vh - 147px);
+  	height: calc(98vh - 147px);
+  }
+  .board{
+    max-height: calc(98vh - 146px);
+    height: calc(98vh - 146px);  
+    width:     calc((98vh - 147px));
+  	max-width: calc((98vh - 147px));
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .square {
     font-size: 3em; /* Larger text on mobile for better visibility */
   }

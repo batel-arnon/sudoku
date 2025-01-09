@@ -191,7 +191,7 @@ class Game extends React.Component {
     //  1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
     const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,45,48,50,53,54,62,64,70,74,75,67,77,78],
     [80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74,79,77],
-    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79]];
+    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79,1,2,4,6,8,9,13,15,16,18,20,22,25,28,29,31,34,37,42,45,47,49,50,55,56,58,60,63,65,67,70,71,73,76,78]];
     const board = this.generateValidSudokuBoard();
     return this.clearBoardPositions(board, shapes[level]);
   }
@@ -337,18 +337,18 @@ class Game extends React.Component {
     }
     return true;
   }
+  setLevel(level){
+    this.setState({
+      beginning: this.boardGenerator(level),
+      squares: Array(81).fill(null),
+      highlighted: [],  // Array to store highlighted squares' indices
+      selectedSquare: null,  
+      buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
+    });
+  }
   handleNumberSelection(value) {
     const { selectedSquare, squares } = this.state;
     let prev = 0;
-    function setLevel(level){
-      this.setState({
-        beginning: this.boardGenerator(level),
-        squares: Array(81).fill(null),
-        highlighted: [],  // Array to store highlighted squares' indices
-        selectedSquare: null,  
-        buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
-      });
-    }
     if (selectedSquare !== null) {
       prev = this.state.squares[selectedSquare];
       this.colorNecc(selectedSquare, value, prev);
@@ -370,19 +370,19 @@ class Game extends React.Component {
           const easyButton = document.createElement('button');
           easyButton.textContent = 'Easy';
           easyButton.addEventListener('click', function() {
-              setLevel(2); // Easy level
+              Game.setLevel(2); // Easy level
           });
           
           const mediumButton = document.createElement('button');
           mediumButton.textContent = 'Medium';
           mediumButton.addEventListener('click', function() {
-              setLevel(1); // Medium level
+              Game.setLevel(1); // Medium level
           });
           
           const hardButton = document.createElement('button');
           hardButton.textContent = 'Hard';
           hardButton.addEventListener('click', function() {
-              setLevel(0); // Hard level
+              Game.setLevel(0); // Hard level
           });
 
           // Append buttons to the levelButtons div
