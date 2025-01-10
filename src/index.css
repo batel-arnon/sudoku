@@ -210,3 +210,9 @@ ol, ul {
     font-size: 3em; /* Larger text on mobile for better visibility */
   }
 }
+
+@media (max-width: 400px) {
+  .square {
+    font-size: 1em; /* Larger text on mobile for better visibility */
+  }
+}
