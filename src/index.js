@@ -445,9 +445,9 @@ class Game extends React.Component {
               <button class="level-button" className="header_buttons" onClick={()=>this.setLevel(0)}>Hard</button>
             </div>
             <div id='instruct'>
-                  this game is quite similar to sudoku game, you need to have each number once in a cube, row and column. <br/>
-                  also, there is an extra rule, that every number should place once in each relative place in the cube. now you can try playing. <br/>
-                  for example, if i have 4 in the left up corner, i cant put 4 in any left up corner of the other cubes<br/>
+                  This game is quite similar to the sudoku game, you need to find the numbers 1-9 in every square, row and column. <br/>
+                  There is an additional new rule: every number should be placed only once in each relative place. <br/>
+                  F.e. if you placed 4 in the left up corner, you cant put the number 4 again in a left up corner of another square<br/>
                   enjoy!
               </div>
               <div className={`${this.state.showNote ? '' : 'hiddenDiv'}`}>
