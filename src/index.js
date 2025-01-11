@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React , {useEffect , Component} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
@@ -6,7 +6,7 @@ import './index.css';
 function Square(props) {
   return (
     <button
-      className={`square ${props.highlighted ? 'red-text' : ''}`}  // Apply red-text if highlighted
+      className={`square ${props.highlighted ? 'red-text' : ''} ${props.selectedSquare ?'red-bg' :''}`}  // Apply red-text if highlighted
       onClick={props.onClick}
     >
       {props.value > 0 ? props.value : null}
@@ -41,6 +41,7 @@ class Board extends React.Component {
         value={this.props.squares[i]}
         highlighted={isHighlighted}  // Pass the highlighted flag
         onClick={() => this.props.onClick(i)}
+        selectedSquare={this.props.selectedSquare===i}
       />
     );
   }
@@ -63,6 +64,8 @@ class Game extends React.Component {
       highlighted: [],  // Array to store highlighted squares' indices
       selectedSquare: null,  
       buttonPosition: { top: 100, left: 500 }, // Store position of number buttons
+      showLevelSelect: false,
+      showNote: false
     };
   }
 
@@ -191,9 +194,23 @@ class Game extends React.Component {
     //  1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
     const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,45,48,50,53,54,62,64,70,74,75,67,77,78],
     [80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74,79,77],
-    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79,1,2,4,6,8,9,13,15,16,18,20,22,25,28,29,31,34,37,42,45,47,49,50,55,56,58,60,63,65,67,70,71,73,76,78]];
+    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79],
+    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79,1,2,4,6,8,9,13,15,16,18,20,22,25,28,29,31,34,37,42,45,47,49,50,55,56,58,60,63,65,67,70,71,73,76,78],
+    [3,4,6,7,12,13,15,16,27,28,30,31,33,34,36,37,39,40,42,43,54,55,57,58,60,61,63,64,66,67,69,70],
+  ];
     const board = this.generateValidSudokuBoard();
     return this.clearBoardPositions(board, shapes[level]);
+  }
+  instructions(){
+    const instr = document.getElementById('instruct');
+    instr.style.display = (instr.style.display === 'none' || instr.style.display === '') ? 'block' : 'none';
+
+  }
+  instructionsg(){
+    const instr = document.getElementById('instruct');
+    instr.style.display ='block';
+    this.setState({showNote: true});
+    this.setLevel(4);
   }
   isCube(index, value){
     const cubes = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
@@ -207,7 +224,7 @@ class Game extends React.Component {
     }
     for (let i = 0; i < cubes[ind].length; i++) {
       if (this.state.squares[cubes[ind][i]]===value){
-        if (cubes[ind][i]!=index)
+        if (cubes[ind][i]!==index)
           return cubes[ind][i];
       }
     }
@@ -217,7 +234,7 @@ class Game extends React.Component {
     let begin_state = 9*Math.floor(index/9);
     for (let i = begin_state; i < begin_state+9; i++) {
       if(this.state.squares[i] === value){
-        if (i!=index)
+        if (i!==index)
           return i;
       }
     }
@@ -230,7 +247,7 @@ class Game extends React.Component {
     }
     for (let i = begin_state; i < 81; i+=9) {
       if(this.state.squares[i] === value){
-        if (i!=index)
+        if (i!==index)
           return i;
       }
     }
@@ -248,7 +265,7 @@ class Game extends React.Component {
     }
     for (let i = 0; i < cubes.length; i++) {
       if (this.state.squares[cubes[i][index_place_in_the_cube]]===value){
-        if (index != cubes[i][index_place_in_the_cube])
+        if (index !== cubes[i][index_place_in_the_cube])
           return cubes[i][index_place_in_the_cube];
       }
     }
@@ -296,7 +313,6 @@ class Game extends React.Component {
   // Check validity and call changeColor
   colorNecc(index, value, prev) {
     const det = this.isValid(index, value);
-    const list_to_remove = [];
     if (value === 0){
       let det0 = this.isValid(index, prev);
       this.removeHighlighted([index, det0[0], det0[1], det0[2], det0[3]]);
@@ -305,10 +321,10 @@ class Game extends React.Component {
     if (!det[4]) {
       const list_of_indexes_to_change_color = [];
       list_of_indexes_to_change_color.push(index);
-      if (det[0] != -1) list_of_indexes_to_change_color.push(det[0]);
-      if (det[1] != -1) list_of_indexes_to_change_color.push(det[1]);
-      if (det[2] != -1) list_of_indexes_to_change_color.push(det[2]);
-      if (det[3] != -1) list_of_indexes_to_change_color.push(det[3]);
+      if (det[0] !== -1) list_of_indexes_to_change_color.push(det[0]);
+      if (det[1] !== -1) list_of_indexes_to_change_color.push(det[1]);
+      if (det[2] !== -1) list_of_indexes_to_change_color.push(det[2]);
+      if (det[3] !== -1) list_of_indexes_to_change_color.push(det[3]);
       this.changeColor(list_of_indexes_to_change_color);
     }
     else{
@@ -326,26 +342,31 @@ class Game extends React.Component {
   }
 
   isFull(squares){
-    let cnt = 0;
     for (let i = 0; i < this.state.squares.length; i++) {
       if(this.state.squares[i] === 0){
-        cnt ++;
+        return false;
       }
-    }
-    if (cnt>1){
-      return false;
     }
     return true;
   }
   setLevel(level){
+    var bg=this.boardGenerator(level);
     this.setState({
-      beginning: this.boardGenerator(level),
-      squares: Array(81).fill(null),
+      beginning: bg,
+      squares: bg,
       highlighted: [],  // Array to store highlighted squares' indices
       selectedSquare: null,  
       buttonPosition: { top: 0, left: 0 }, // Store position of number buttons
+      showLevelSelect: false
     });
   }
+  startNewGame(){
+    // Function to show the level selector when the button is clicked
+    this.setState({showLevelSelect:true, showNote:false});
+    const instr = document.getElementById('instruct');
+    instr.style.display ='none';
+  }
+
   handleNumberSelection(value) {
     const { selectedSquare, squares } = this.state;
     let prev = 0;
@@ -355,69 +376,45 @@ class Game extends React.Component {
       const newSquares = [...squares];  // Copy the squares array to avoid direct mutation
       newSquares[selectedSquare] = value;  // Set the number at the selected square
       this.setState({ squares: newSquares, selectedSquare: null });  // Update state and reset selected square
-      
-      //this.insertValueToSquares(i, value);
-      if (this.isFull(squares)) {
-        alert("congrats! you finished!");
-        const refreshButton = document.createElement("button");
-        refreshButton.textContent = "play another game!";
-        // Append the button to the body of the page
-        document.body.appendChild(refreshButton);
-
-        // Add click event to the button to reload the page
-        refreshButton.addEventListener("click", function() {
-          // Create the buttons dynamically
-          const easyButton = document.createElement('button');
-          easyButton.textContent = 'Easy';
-          easyButton.addEventListener('click', function() {
-              Game.setLevel(2); // Easy level
-          });
-          
-          const mediumButton = document.createElement('button');
-          mediumButton.textContent = 'Medium';
-          mediumButton.addEventListener('click', function() {
-              Game.setLevel(1); // Medium level
-          });
-          
-          const hardButton = document.createElement('button');
-          hardButton.textContent = 'Hard';
-          hardButton.addEventListener('click', function() {
-              Game.setLevel(0); // Hard level
-          });
-
-          // Append buttons to the levelButtons div
-          document.body.appendChild(easyButton);
-          document.body.appendChild(mediumButton);
-          document.body.appendChild(hardButton);
-
-        });
-        /////suggest new game- harder one.
-      }
+      setTimeout(() => {
+        if (this.isFull(this.state.squares)) {
+          alert("Congrats! You finished!");
+          this.setLevel(1); // Update the level to 1 when finished
+        }
+      }, 0); // Delay alert just after the current event loop
     }
   }  
 
   handleClick(i) {
-    //const row = Math.floor(i / 9);
-    //const col = i % 9;
-
     // Set the position where the number buttons will appear
     this.setState({
       selectedSquare: i,
-      //buttonPosition: {
- //       top: row * 90 + 130,  // Adjust top position
-   //     left: col * 90 +30, // Adjust left position
-     // },
     }); 
   }
 
   render() {
-    const { buttonPosition, selectedSquare, squares } = this.state;
     return (
       <div className="game"><header>
         <h1>SUDOKA</h1>
           <nav>
             <ul>
-              <li><a href="instructions.html">Instructions</a></li>
+            <button id="instructions" onClick={()=>this.instructions()}>instructions</button>
+            <button id="instructionsgame" onClick={()=>this.instructionsg()}>play instructions game</button>
+            <button id="openSelectorButton" onClick={()=>this.startNewGame()}>play another game</button>              
+            <div id="levelSelector" className={`${this.state.showLevelSelect ? 'blockDiv' : 'hiddenDiv'}`}  >
+              <button class="level-button" onClick={()=>this.setLevel(2)}>Easy</button>
+              <button class="level-button" onClick={()=>this.setLevel(1)}>Medium</button>
+              <button class="level-button" onClick={()=>this.setLevel(0)}>Hard</button>
+            </div>
+            <div id='instruct'>
+                  this game is quite similar to sudoku game, you need to have each number once in a cube, row and column. <br/>
+                  also, there is an extra rule, that every number should place once in each relative place in the cube. now you can try playing. <br/>
+                  for example, if i have 4 in the left up corner, i cant put 4 in any left up corner of the other cubes<br/>
+                  enjoy!
+              </div>
+              <div className={`${this.state.showNote ? '' : 'hiddenDiv'}`}>
+                in this game try to put numbers in the empty cube with the extra rule.
+              </div>
             </ul>
         </nav>  
         </header>
@@ -426,6 +423,7 @@ class Game extends React.Component {
         <Board squares={this.state.squares}
           highlighted={this.state.highlighted}  // Pass highlighted state to Board
           onClick={i => this.handleClick(i)}
+          selectedSquare={this.state.selectedSquare}
         />
         </div>
         

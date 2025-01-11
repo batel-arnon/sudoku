@@ -122,6 +122,9 @@ ol, ul {
 .red-text {
   color: red;
 }
+.red-bg{
+  background-color: aquamarine;
+}
 
 .board .square:nth-child(3n) {
   border-right: 3px solid #000; /* Bold vertical line every 3 cells */
@@ -215,4 +218,16 @@ ol, ul {
   .square {
     font-size: 1em; /* Larger text on mobile for better visibility */
   }
+}
+#levelSelector {
+  margin-top: 20px;
+}
+#instruct{
+  display: none;
+}
+.hiddenDiv{
+  display: none;
+}
+.blockDiv{
+  display: block;
 }
