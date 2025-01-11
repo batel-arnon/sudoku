@@ -188,18 +188,56 @@ class Game extends React.Component {
   
     return board;  // Return the modified board
   }
-  
-  boardGenerator(level = 2){
+  generateRandomArray(level) {
+    // Set the min and max values for array length based on the level
+    let minLength, maxLength;
+    
+    if (level === 2) {
+        // Easy: 40-50 numbers
+        minLength = 40;
+        maxLength = 50;
+    } else if (level === 1) {
+        // Medium: 35-40 numbers
+        minLength = 35;
+        maxLength = 40;
+    } else if (level === 0) {
+        // Hard: 30-35 numbers
+        minLength = 30;
+        maxLength = 35;
+    } else {
+        // Invalid level, return an empty array
+        return [];
+    }
+
+    // Calculate a random array length between minLength and maxLength
+    const arrayLength = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+
+    // Generate the array with random numbers between 0 and 80
+    const randomArray = [];
+    for (let i = 0; i < arrayLength; i++) {
+        randomArray.push(Math.floor(Math.random() * 81)); // Random number between 0 and 80
+    }
+
+    return randomArray;
+}
+
+  boardGenerator(level = 3){
     //const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
     //  1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
-    const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,45,48,50,53,54,62,64,70,74,75,67,77,78],
-    [80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74,79,77],
-    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79],
-    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79,1,2,4,6,8,9,13,15,16,18,20,22,25,28,29,31,34,37,42,45,47,49,50,55,56,58,60,63,65,67,70,71,73,76,78],
-    [3,4,6,7,12,13,15,16,27,28,30,31,33,34,36,37,39,40,42,43,54,55,57,58,60,61,63,64,66,67,69,70],
+    const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,44,48,50,53,54,62,64,70,74,75,67,77,78],//hard
+    [80,40,20,30,70,24,38,26,13,7,52,54,33,1,11,23,14,43,37,27,4,3,57,47,56,62,74,79,77,4,8,18,72,10,67],//med
+    [10,76,54,70,1,3,5,7,9,15,18,19,54,6,57,46,48,57,32,31,26,24,37,39,42,49,51,52,63,65,68,25,21,19,36,27,61,62,64,78,75,74,44],//easy
+    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79,61],//the start game
+    [3,4,6,7,12,13,15,16,27,28,30,31,33,34,36,37,39,40,42,43,54,55,57,58,60,61,63,64,66,67,69,70],//the instruction game
+    [0,3,5,7,10,11,12,14,17,19,21,23,24,26,27,30,32,35,36,38,40,41,43,44,46,48,51,52,53,54,57,59,61,62,64,66,68,69,72,74,75,77,79,1,2,4,6,8,9,13,15,16,18,20,22,25,28,29,31,34,37,42,45,47,49,50,55,56,58,60,63,65,67,70,71,73,76,78],//for me board
   ];
     const board = this.generateValidSudokuBoard();
-    return this.clearBoardPositions(board, shapes[level]);
+    if (level>=0 & level<3){
+      return this.clearBoardPositions(board, this.generateRandomArray(level));
+    }
+    else if(level >= 3){
+      return this.clearBoardPositions(board, shapes[level]);
+    }
   }
   instructions(){
     const instr = document.getElementById('instruct');
