@@ -29,12 +29,16 @@ body {
   background-color: #f0f0f0;
   font: 16px "Century Gothic", Futura, sans-serif;
 }
-h1 {
+.h1 {
+  font-size: 32px;      /* ~2em relative to body text */
+  font-weight: bold;    /* Bold text */
   text-align: center;
+  padding-top: 0;
+  margin-top: 0;
 }
 
 header {
-  background-color: #333;
+  background-color: #96083e;
   color: white;
   padding: 1rem;
   min-width:100%;
@@ -123,7 +127,7 @@ ol, ul {
   color: red;
 }
 .red-bg{
-  background-color: aquamarine;
+  background-color: rgb(241, 106, 174);
 }
 
 .board .square:nth-child(3n) {
@@ -230,4 +234,15 @@ ol, ul {
 }
 .blockDiv{
   display: block;
+}
+.header_buttons{
+  color: white;
+  background-color: #96083e;
+  /*margin-right: 10px;*/
+  font-size: 1.5em;
+  gap:10px;
+  align-items: center;
+  align-self: center;
+  text-align: center;
+  justify-content: center;
 }

@@ -395,16 +395,16 @@ class Game extends React.Component {
   render() {
     return (
       <div className="game"><header>
-        <h1>SUDOKA</h1>
+        <div className='h1'>SUDOKA</div>
           <nav>
             <ul>
-            <button id="instructions" onClick={()=>this.instructions()}>instructions</button>
-            <button id="instructionsgame" onClick={()=>this.instructionsg()}>play instructions game</button>
-            <button id="openSelectorButton" onClick={()=>this.startNewGame()}>play another game</button>              
+            <button id="instructions" className="header_buttons" onClick={()=>this.instructions()}>instructions</button>
+            <button id="instructionsgame" className="header_buttons" onClick={()=>this.instructionsg()}>play instructions game</button>
+            <button id="openSelectorButton" className="header_buttons" onClick={()=>this.startNewGame()}>play another game</button>              
             <div id="levelSelector" className={`${this.state.showLevelSelect ? 'blockDiv' : 'hiddenDiv'}`}  >
-              <button class="level-button" onClick={()=>this.setLevel(2)}>Easy</button>
-              <button class="level-button" onClick={()=>this.setLevel(1)}>Medium</button>
-              <button class="level-button" onClick={()=>this.setLevel(0)}>Hard</button>
+              <button class="level-button" className="header_buttons" onClick={()=>this.setLevel(2)}>Easy</button>
+              <button class="level-button" className="header_buttons" onClick={()=>this.setLevel(1)}>Medium</button>
+              <button class="level-button" className="header_buttons" onClick={()=>this.setLevel(0)}>Hard</button>
             </div>
             <div id='instruct'>
                   this game is quite similar to sudoku game, you need to have each number once in a cube, row and column. <br/>
