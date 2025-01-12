@@ -41,8 +41,8 @@ class Board extends React.Component {
         value={this.props.squares[i]}
         highlighted={isHighlighted}  // Pass the highlighted flag
         onClick={() => this.props.onClick(i)}
-        selectedSquare={this.props.selectedSquare===i}
         selectedValue={this.props.selectedValue===this.props.squares[i]}
+        selectedSquare={this.props.selectedSquare===i}
       />
     );
   }
@@ -360,22 +360,17 @@ class Game extends React.Component {
       }, 0); // Delay alert just after the current event loop      return true;
     }
     if (!det[4]) {
-      const list_of_indexes_to_change_color = [];
-      list_of_indexes_to_change_color.push(index);
-      if (det[0] !== -1) list_of_indexes_to_change_color.push(det[0]);
-      if (det[1] !== -1) list_of_indexes_to_change_color.push(det[1]);
-      if (det[2] !== -1) list_of_indexes_to_change_color.push(det[2]);
-      if (det[3] !== -1) list_of_indexes_to_change_color.push(det[3]);
-      this.changeColor(list_of_indexes_to_change_color);
+      const list_of_indexes = [];
+      list_of_indexes.push(index);
+      if (det[0] !== -1) list_of_indexes.push(det[0]);
+      if (det[1] !== -1) list_of_indexes.push(det[1]);
+      if (det[2] !== -1) list_of_indexes.push(det[2]);
+      if (det[3] !== -1) list_of_indexes.push(det[3]);
+      this.changeColor(list_of_indexes);
     }
     else{
       let det0 = this.isValid(index, prev);
       this.removeHighlighted([index, det0[0], det0[1], det0[2], det0[3]]);
-      //list_to_remove.push(index);
-      //list_to_remove.push(anah0);
-      //list_to_remove.push(cube0);
-      //list_to_remove.push(ofek0);
-      //list_to_remove.push(extra0);
     }
     setTimeout(() => {
       this.removingNoNecc();
