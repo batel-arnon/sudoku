@@ -17,19 +17,19 @@ function Square(props) {
 class Numbers extends React.Component {
   render(){
     const buttons = [];
-  for (let i = 1; i <= 9; i++) {
-    buttons.push(
-      <button key={i} onClick={() => this.props.handleNumberSelection(i)}>
-        {i}
-      </button>
+    for (let i = 1; i <= 9; i++) {
+      buttons.push(
+        <button key={i} onClick={() => this.props.handleNumberSelection(i)}>
+          {i}
+        </button>
+      );
+    }
+    return (
+      <div className="number-buttons-container">
+        {buttons}
+      <button onClick={() => this.props.handleNumberSelection(0)}>Clr</button>
+      </div>
     );
-  }
-  return (
-    <div className="number-buttons-container">
-      {buttons}
-    <button onClick={() => this.props.handleNumberSelection(0)}>Clr</button>
-    </div>
-  );
   }
 }
 
@@ -317,7 +317,6 @@ class Game extends React.Component {
     squares[index] = value;
     this.setState({squares: squares})
   }
-
   // Updated changeColor function
   changeColor(list_of_indexes_to_change_color) {
     this.setState(prevState => ({
@@ -348,15 +347,17 @@ class Game extends React.Component {
         list_to_remove.push(ind);
       }
     }
-    return list_to_remove;
+    this.removeHighlighted(list_to_remove);
   }
   // Check validity and call changeColor
   colorNecc(index, value, prev) {
     const det = this.isValid(index, value);
     if (value === 0){
       let det0 = this.isValid(index, prev);
-      this.removeHighlighted([index, det0[0], det0[1], det0[2], det0[3]]);
-      return true;
+      //this.removeHighlighted([index, det0[0], det0[1], det0[2], det0[3]]);
+      setTimeout(() => {
+        this.removingNoNecc();
+      }, 0); // Delay alert just after the current event loop      return true;
     }
     if (!det[4]) {
       const list_of_indexes_to_change_color = [];
@@ -376,8 +377,9 @@ class Game extends React.Component {
       //list_to_remove.push(ofek0);
       //list_to_remove.push(extra0);
     }
-    //list_to_remove = this.removingNoNecc();
-    //this.removeHighlighted(list_to_remove);
+    setTimeout(() => {
+      this.removingNoNecc();
+    }, 0); // Delay alert just after the current event loop
     return det[4];
   }
 
