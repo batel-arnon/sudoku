@@ -6,7 +6,7 @@ import './index.css';
 function Square(props) {
   return (
     <button
-      className={`square ${props.highlighted ? 'red-text' : ''} ${props.selectedSquare ?'red-bg' :''}`}  // Apply red-text if highlighted
+      className={`square ${props.highlighted ? 'red-text' : ''} ${props.selectedSquare ?'red-bg' :''} ${props.selectedValue ?'light-bg' :''}`}  // Apply red-text if highlighted
       onClick={props.onClick}
     >
       {props.value > 0 ? props.value : null}
@@ -42,6 +42,7 @@ class Board extends React.Component {
         highlighted={isHighlighted}  // Pass the highlighted flag
         onClick={() => this.props.onClick(i)}
         selectedSquare={this.props.selectedSquare===i}
+        selectedValue={this.props.selectedValue===this.props.squares[i]}
       />
     );
   }
@@ -63,6 +64,7 @@ class Game extends React.Component {
       squares: Array(81).fill(null),
       highlighted: [],  // Array to store highlighted squares' indices
       selectedSquare: null,  
+      selectedValue: null,
       buttonPosition: { top: 100, left: 500 }, // Store position of number buttons
       showLevelSelect: false,
       showNote: false
@@ -408,6 +410,9 @@ class Game extends React.Component {
   handleNumberSelection(value) {
     const { selectedSquare, squares } = this.state;
     let prev = 0;
+    if (value !== 0){
+      this.setState({selectedValue:value});
+    }
     if (selectedSquare !== null) {
       prev = this.state.squares[selectedSquare];
       this.colorNecc(selectedSquare, value, prev);
@@ -428,6 +433,7 @@ class Game extends React.Component {
     this.setState({
       selectedSquare: i,
     }); 
+    this.setState({selectedValue:null});
   }
 
   render() {
@@ -462,6 +468,7 @@ class Game extends React.Component {
           highlighted={this.state.highlighted}  // Pass highlighted state to Board
           onClick={i => this.handleClick(i)}
           selectedSquare={this.state.selectedSquare}
+          selectedValue={this.state.selectedValue}
         />
         </div>
         

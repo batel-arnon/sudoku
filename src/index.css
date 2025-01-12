@@ -129,6 +129,9 @@ ol, ul {
 .red-bg{
   background-color: rgb(241, 106, 174);
 }
+.light-bg{
+  background-color: #fac5d2;
+}
 
 .board .square:nth-child(3n) {
   border-right: 3px solid #000; /* Bold vertical line every 3 cells */
