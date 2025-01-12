@@ -1,7 +1,7 @@
 import React , {useEffect , Component} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-
+import Ad from './Ad';
 
 function Square(props) {
   return (

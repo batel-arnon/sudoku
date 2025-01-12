@@ -64,8 +64,6 @@ header nav ul li a {
   align-self: center;
   justify-content: center;
   align-items: center;
-  width: 98vw;
-  height: 98vh;
 }
 
 .coverboard{
@@ -74,10 +72,10 @@ header nav ul li a {
   align-items: center;
   align-self: center;
   display: grid;
-  width: calc((98vh - 147px)*1.1);
-  max-width: calc((98vh - 147px)*1.1);
-  max-height: calc((98vh - 147px));
-  height: calc((98vh - 147px));
+  width: calc((98vh - 237px)*1.1);
+  max-width: calc((98vh - 237px)*1.1);
+  max-height: calc((98vh - 237px));
+  height: calc((98vh - 237px));
   gap: 0; /* Remove space between cells */
 }
 
@@ -171,48 +169,60 @@ ol, ul {
   .number-buttons-container {
     aspect-ratio: 10;
     grid-template-columns: repeat(10, 1fr);
-    height: min(calc((98vh - 146px)/11),calc(98vw*0.1));
-    min-height:min(calc((98vh - 146px)/11),calc(98vw*0.1));
-    width: min(calc((98vh - 146px)*10/11),98vw);
-    max-width: min(calc((98vh - 146px)*10/11),98vw);
+    height: min(calc((98vh - 237px)/11),calc(98vw*0.1));
+    min-height:min(calc((98vh - 237px)/11),calc(98vw*0.1));
+    width: min(calc((98vh - 237px)*10/11),98vw);
+    max-width: min(calc((98vh - 237px)*10/11),98vw);
+  }
+  .game{
+    width: min(calc((98vh - 237px)*10/11),98vw);
+  	max-width: min(calc((98vh - 237px)*10/11),98vw);
+    height: min(calc(237px+98vw*1.1),98vh);
+    max-height: min(calc(237px+98vw*1.1),98vh);
   }
   .coverboard{
     display: grid;
     grid-template-rows: repeat(2, 1fr);
-    width: min(calc((98vh - 146px)*10/11),98vw);
-    height: calc((98vh - 146px));
-  	max-width: min(calc((98vh - 146px)*10/11),98vw);
-  	max-height: calc(98vh - 146px);
+    width: min(calc((98vh - 237px)*10/11),98vw);
+    height: calc((98vh - 237px));
+  	max-width: min(calc((98vh - 237px)*10/11),98vw);
+  	max-height: calc(98vh - 237px);
   }
   .board{
-    height:    min(calc((98vh - 146px)*10/11),98vw);  
-    width:     min(calc((98vh - 146px)*10/11),98vw);
-  	max-width: min(calc((98vh - 146px)*10/11),98vw);
-    max-height:min(calc((98vh - 146px)*10/11),98vw);
+    height:    min(calc((98vh - 237px)*10/11),98vw);  
+    width:     min(calc((98vh - 237px)*10/11),98vw);
+  	max-width: min(calc((98vh - 237px)*10/11),98vw);
+    max-height:min(calc((98vh - 237px)*10/11),98vw);
   }
 }
 @media (orientation: landscape) {
   .number-buttons-container {
     aspect-ratio: 0.1;
     grid-template-rows: repeat(10, 1fr);
-    height: calc(98vh - 146px);
-    min-height:calc(98vh - 146px);
-    width: calc((98vh - 146px)/10);
-    max-width: calc((98vh - 146px)/10);
+    height: calc(98vh - 237px);
+    min-height:calc(98vh - 237px);
+    width: calc((98vh - 237px)/10);
+    max-width: calc((98vh - 237px)/10);
+  }
+  .game{
+  	width: calc((98vh - 237px)*1.1);
+  	max-width: calc((98vh - 237px)*1.1);
+    height: 98vh;
+    max-height: 98vh;
   }
   .coverboard{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-  	width: calc((98vh - 147px)*1.1);
-  	max-width: calc((98vh - 147px)*1.1);
-  	max-height: calc(98vh - 147px);
-  	height: calc(98vh - 147px);
+  	width: calc((98vh - 237px)*1.1);
+  	max-width: calc((98vh - 237px)*1.1);
+  	max-height: calc(98vh - 237px);
+  	height: calc(98vh - 237px);
   }
   .board{
-    max-height: calc(98vh - 146px);
-    height: calc(98vh - 146px);  
-    width:     calc((98vh - 147px));
-  	max-width: calc((98vh - 147px));
+    max-height: calc(98vh - 237px);
+    height: calc(98vh - 237px);  
+    width:     calc((98vh - 237px));
+  	max-width: calc((98vh - 237px));
   }
 }
 @media (max-width: 700px) {
