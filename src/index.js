@@ -223,7 +223,7 @@ class Game extends React.Component {
     return randomArray;
 }
 
-  boardGenerator(level = 3){
+  boardGenerator(level = 5){
     //const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
     //  1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
     const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,44,48,50,53,54,62,64,70,74,75,67,77,78],//hard
@@ -417,7 +417,7 @@ class Game extends React.Component {
       newSquares[selectedSquare] = value;  // Set the number at the selected square
       this.setState({ squares: newSquares, selectedSquare: null });  // Update state and reset selected square
       setTimeout(() => {
-        if (this.isFull(this.state.squares)) {
+        if (this.isFull(this.state.squares) && this.state.highlighted.length==0) {
           alert("Congrats! You finished!");
           this.setLevel(1); // Update the level to 1 when finished
         }
