@@ -67,14 +67,21 @@ class Game extends React.Component {
       selectedValue: null,
       buttonPosition: { top: 100, left: 500 }, // Store position of number buttons
       showLevelSelect: false,
-      showNote: false
+      showNote: false,
+      countNums: Array(9).fill(0),
     };
   }
 
   componentDidMount() {
     this.setState({ squares: this.state.beginning });
   }
-
+  countAllNums(){
+    const countNums2= this.state.countNums;
+    for(let i=0;i<this.state.squares.length;i++){
+      countNums2[this.state.squares[i]]= countNums2[this.state.squares[i]]+1 ;
+    }
+    this.setState({countNums:countNums2});
+  }
   generateValidSudokuBoard() {
   // Function to shuffle an array
     function shuffle(array) {
@@ -223,7 +230,7 @@ class Game extends React.Component {
     return randomArray;
 }
 
-  boardGenerator(level = 5){
+  boardGenerator(level = 3){
     //const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
     //  1,2,6,4,5,2,3,1,5,6,4,8,9,7,5,6,4,8,9,7,2,3,1,8,9,7,2,3,1,5,6,4];
     const shapes=[[2,3,13,5,6,10,16,18,26,27,30,32,35,37,43,44,48,50,53,54,62,64,70,74,75,67,77,78],//hard
