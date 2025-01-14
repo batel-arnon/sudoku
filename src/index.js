@@ -1,7 +1,6 @@
-import React , {useEffect , Component} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Ad from './Ad';
 
 function Square(props) {
   return (
@@ -360,8 +359,6 @@ class Game extends React.Component {
   colorNecc(index, value, prev) {
     const det = this.isValid(index, value);
     if (value === 0){
-      let det0 = this.isValid(index, prev);
-      //this.removeHighlighted([index, det0[0], det0[1], det0[2], det0[3]]);
       setTimeout(() => {
         this.removingNoNecc();
       }, 0); // Delay alert just after the current event loop      return true;
@@ -424,7 +421,7 @@ class Game extends React.Component {
       newSquares[selectedSquare] = value;  // Set the number at the selected square
       this.setState({ squares: newSquares, selectedSquare: null });  // Update state and reset selected square
       setTimeout(() => {
-        if (this.isFull(this.state.squares) && this.state.highlighted.length==0) {
+        if (this.isFull(this.state.squares) && this.state.highlighted.length===0) {
           alert("Congrats! You finished!");
           this.setLevel(1); // Update the level to 1 when finished
         }

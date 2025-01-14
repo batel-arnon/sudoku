@@ -81,7 +81,7 @@ header nav ul li a {
 
 .number-buttons-container {
   display: grid;
-  font-size: 7em;
+  font-size: 50px;
   height: 100%;
   min-height:100%;
 }
@@ -106,7 +106,7 @@ header nav ul li a {
   box-sizing: border-box; /* Ensure border is included in element's width/height */
   aspect-ratio: 1; /* Keep squares square */
   min-height: 20px;
-  font-size: 5em;
+  font-size: 40px;
 }
 
 ol, ul {
@@ -132,31 +132,31 @@ ol, ul {
 }
 
 .board .square:nth-child(3n) {
-  border-right: 3px solid #000; /* Bold vertical line every 3 cells */
+  border-right: 4px solid #000; /* Bold vertical line every 3 cells */
 }
 
 .board .square:nth-child(9n + 1) {
-  border-left: 3px solid #000; /* Bold left border every 9th cell */
+  border-left: 4px solid #000; /* Bold left border every 9th cell */
 }
 
 .board .square:nth-child(-n+9) {
-  border-top: 3px solid #000; /* Bold top line for the first row */
+  border-top: 4px solid #000; /* Bold top line for the first row */
 }
 
 .board .square:nth-child(n+73):nth-child(-n+81),
 .board .square:nth-child(n+19):nth-child(-n+27),
 .board .square:nth-child(n+46):nth-child(-n+54) {
-  border-bottom: 3px solid #000; /* Bold bottom line for the last row */
+  border-bottom: 4px solid #000; /* Bold bottom line for the last row */
 }
 
 .number-buttons {
   display: grid;
   justify-content: space-around;
-  font-size: 5em;
+  font-size: 50px;
 }
 
 .button {
-  font-size: 4em;
+  font-size: 40px;
   cursor: pointer;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -227,13 +227,13 @@ ol, ul {
 }
 @media (max-width: 700px) {
   .square {
-    font-size: 3em; /* Larger text on mobile for better visibility */
+    font-size: 20px; /* Larger text on mobile for better visibility */
   }
 }
 
 @media (max-width: 400px) {
   .square {
-    font-size: 1em; /* Larger text on mobile for better visibility */
+    font-size: 16px; /* Larger text on mobile for better visibility */
   }
 }
 #levelSelector {
@@ -252,7 +252,7 @@ ol, ul {
   color: white;
   background-color: #96083e;
   /*margin-right: 10px;*/
-  font-size: 1.5em;
+  font-size: 20px;
   gap:10px;
   align-items: center;
   align-self: center;
