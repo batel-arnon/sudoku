@@ -70,10 +70,12 @@ class Game extends React.Component {
       showNote: false,
       countNums: Array(9).fill(0),
     };
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   componentDidMount() {
     this.setState({ squares: this.state.beginning });
+    window.addEventListener('keydown', this.handleKeyPress);
   }
   countAllNums(){
     const countNums2= this.state.countNums;
@@ -228,7 +230,7 @@ class Game extends React.Component {
     }
 
     return randomArray;
-}
+  }
 
   boardGenerator(level = 3){
     //const basic_board = [1,2,3,4,5,6,7,8,9,4,5,6,7,8,9,1,2,3,7,8,9,1,2,3,4,5,6,3,1,2,6,4,5,9,7,8,6,4,5,9,7,8,3,1,2,9,7,8,3,
@@ -344,17 +346,17 @@ class Game extends React.Component {
     return [anah, cube, ofek, extra, all];
   }
   removingNoNecc(){
-    const list_to_remove = [];
+    const list = [];
     for(let i = 0;i < this.state.highlighted.length;i++){
       let ind = this.state.highlighted[i];
       let val = this.state.squares[ind];
       let det = this.isValid(ind, val);
   
       if (det[4]){
-        list_to_remove.push(ind);
+        list.push(ind);
       }
     }
-    this.removeHighlighted(list_to_remove);
+    this.removeHighlighted(list);
   }
   // Check validity and call changeColor
   colorNecc(index, value, prev) {
@@ -408,6 +410,12 @@ class Game extends React.Component {
     const instr = document.getElementById('instruct');
     instr.style.display ='none';
   }
+  handleKeyPress = (event) => {
+    if (event.key >= '0' && event.key <= '9') {
+      const value = parseInt(event.key); // Convert string to number
+      this.handleNumberSelection(value); // Handle number selection
+    }
+  }
 
   handleNumberSelection(value) {
     const { selectedSquare, squares } = this.state;
@@ -428,7 +436,7 @@ class Game extends React.Component {
         }
       }, 0); // Delay alert just after the current event loop
     }
-  }  
+  }
 
   handleClick(i) {
     // Set the position where the number buttons will appear

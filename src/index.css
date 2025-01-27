@@ -140,7 +140,7 @@ ol, ul {
 }
 
 .board .square:nth-child(-n+9) {
-  border-top: 4px solid #000; /* Bold top line for the first row */
+  border-top: 5px solid #000; /* Bold top line for the first row */
 }
 
 .board .square:nth-child(n+73):nth-child(-n+81),

@@ -17,6 +17,14 @@ app.get('/games', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'games.html'));
 });
 
+app.get('/developer', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'homepage.html'));
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'sitemap.xml'));
+});
+
 // Serve static files from the React app (after building)
 app.use(express.static(path.join(__dirname, 'build')));
 
